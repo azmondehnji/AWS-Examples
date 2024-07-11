@@ -1,19 +1,19 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
-import * as sns from 'aws-cdk-lib/aws-sns';
-import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cdk from 'aws-cdk-lib';
+import { aws_s3 as s3 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+
 
 export class CdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const queue = new sqs.Queue(this, 'CdkQueue', {
-      visibilityTimeout: Duration.seconds(300)
+    // create a new bucket
+    
+    new s3.Bucket(this, 'my-new-aws-s3-bucket-az232',{
+      versioned:true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects:true,
     });
-
-    const topic = new sns.Topic(this, 'CdkTopic');
-
-    topic.addSubscription(new subs.SqsSubscription(queue));
   }
 }
